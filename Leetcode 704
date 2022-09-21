@@ -1,0 +1,18 @@
+//本题重点在于二分法查找
+//注意边界问题
+class Solution {
+    public int search(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1; //与区间开闭有关
+        while(left <= right){
+            int mid = left + ((right - left) / 2); //防止溢出
+            if(nums[mid] == target){
+                return mid;
+            }else if(nums[mid] < target){
+                left = mid + 1; //需要注意的
+            }else{
+                right = mid - 1; //当循环条件改变时，这里也会有所不同，设计区间开闭，注意一下！
+            } 
+        }
+        return -1;
+    }
