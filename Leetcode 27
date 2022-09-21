@@ -1,0 +1,13 @@
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int result = 0;
+        for(int i=0; i<=nums.length-1; i++){
+            if(nums[i] != val){
+                nums[result] = nums[i];
+                result++;
+            }
+        }
+        return result;
+    }
+}
+//这题比较基础，没什么太多值得讲的，主要是理解题意吧！
