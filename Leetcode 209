@@ -1,0 +1,25 @@
+//Minimum Size Subarray Sum
+//该题运用滑动窗口法完成
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int left = 0;
+        int sum1 = 0;
+        int sum = 0;
+        int result = nums.length;
+        for(int i=0; i<nums.length; i++){
+            sum1 += nums[i];
+        }
+        if(sum1 < target){
+            return 0;
+        }
+        for(int right = 0; right < nums.length; right++){ //初始化right，以right走到最右为终止条件
+            sum += nums[right]; //连续substring的和
+            while(sum >= target){
+                result = Math.min(right - left + 1, result); //涉及到min的小技巧，即第一次不能占用result，且result如果要最小就把初始值设置成最大的
+                sum -= nums[left]; //减掉已经移除的元素值，即最左边的元素值
+                left++;
+            }
+        }
+        return result; //可以写成return result==nums.length?0:result; 省去了对于return 0 这种情况的单独判断
+    }
+}
