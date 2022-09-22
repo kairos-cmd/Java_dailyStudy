@@ -1,0 +1,33 @@
+//螺旋矩阵
+//至于为什么loop = n/2, 则是因为每一层循环都是一个正方形，边长每次都-2，所以至多n/2次后就够不成正方形。当然也能通过（1，2，3...找规律）
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] result = new int[n][n];
+        int loop = 0;
+        int start = 0;
+        int count = 1;
+        while(loop++ < n / 2){
+            for(int i=start; i< n - loop; i++){
+                result[start][i] = count;
+                count ++;
+            }
+            for(int j=start; j< n - loop; j++){ //这里i没有并定义，所以出错，应该在一开始就定义i，j
+                result[j][i] = count;
+                count ++;
+            }
+            for(; i >= loop; i--){
+                result[j][i] = count;
+                count ++;
+            }
+            for(; j >= loop; j--){
+                result[j][i] = count;
+                count ++;
+            }
+            start++;
+        }
+        if(n%2 == 1){
+            result[start][start] = count; //改成result[j][i+1]不知道可不可以 
+        }
+        return result;
+    }
+}
