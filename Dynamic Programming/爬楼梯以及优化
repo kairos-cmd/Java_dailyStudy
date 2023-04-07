@@ -1,3 +1,4 @@
+//用变量减小空间复杂度
 class Solution {
     public int climbStairs(int n) {
         //减小空间复杂度O(1)
@@ -15,3 +16,26 @@ class Solution {
         return item3;
     }
 }
+
+
+
+//用递归法来实现，同时用记忆搜索(Memoization)来优化
+class Solution {
+    public int climbStairs(int n) {
+        //Using recursive and memoization to realize this program
+        int[] memo = new int[n+1];
+        return climbStairsHelper(memo, n);
+    }
+    public int climbStairsHelper(int[] memo, int n){
+        //termination condtion(Placing it on the beginning)
+        if(n==0 || n==1){
+            return 1;
+        }
+        if(memo[n] > 0){
+            return memo[n];
+        }
+        Updating the value of memo array
+        memo[n] = climbStairsHelper(memo, n-1) + climbStairsHelper(memo, n-2);
+        return memo[n];
+    }
+}w
