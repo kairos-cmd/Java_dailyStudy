@@ -1,0 +1,81 @@
+//This is a wrong code. The error is dp[n] <= Integer.MAX_VALUE. We can't let them equal to each other.
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int stairSize = cost.length;
+       int[] dp = new int[stairSize+1];
+       for(int i = 0; i <= stairSize; i++){
+           dp[i] = Integer.MAX_VALUE;
+       }
+       return minCost(cost, stairSize, dp);
+    }
+    public int minCost(int[] cost, int n, int[] dp){
+    //remove = from the following row of the code, it should be dp[n] < Integer.MAX_VALUE
+        if(dp[n] <= Integer.MAX_VALUE){
+            return dp[n];
+        }
+        int min_Val = 0;
+        if(n ==1 ){
+            min_Val = cost[0];
+        }else if(n == 0){
+            min_Val = 0;
+        }else{
+            int cost1 = cost[n-1]+minCost(cost,n-1,dp);
+            int cost2 = cost[n-2]+minCost(cost,n-2,dp);
+            min_Val= Math.min(cost1, cost2);
+        }
+        dp[n] = min_Val;
+        return min_Val;
+    }
+}
+
+//Correct recursively dynamical programming code. Just let dp[1]=0, which means the first step don't need to cost.Also, this can be written as min_Val = 0, when n==1.
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int stairSize = cost.length;
+        int[] dp = new int[stairSize + 1];
+        for (int i = 0; i <= stairSize; i++) {
+            dp[i] = Integer.MAX_VALUE;
+        }
+        dp[1] = 0;
+        return minCost(cost, stairSize, dp);
+    }
+
+    public int minCost(int[] cost, int n, int[] dp) {
+        if (dp[n] != Integer.MAX_VALUE) {
+            return dp[n];
+        }
+        int min_Val;
+        if (n == 1) {
+            min_Val = cost[0];//or min_Val = 0;
+        } else if (n == 0) {
+            min_Val = 0;
+        } else {
+            int cost1 = cost[n - 1] + minCost(cost, n - 1, dp);
+            int cost2 = cost[n - 2] + minCost(cost, n - 2, dp);
+            min_Val = Math.min(cost1, cost2);
+
+        }
+        dp[n] = min_Val;
+        return min_Val;
+    }
+}
+
+//Method 3
+// 方式一：第一步不支付费用
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int len = cost.length;
+        int[] dp = new int[len + 1];
+
+        // 从下标为 0 或下标为 1 的台阶开始，因此支付费用为0
+        dp[0] = 0;
+        dp[1] = 0;
+
+        // 计算到达每一层台阶的最小费用
+        for (int i = 2; i <= len; i++) {
+            dp[i] = Math.min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
+        }
+
+        return dp[len];
+    }
+}
