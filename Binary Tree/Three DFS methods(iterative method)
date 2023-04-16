@@ -1,0 +1,85 @@
+//Preorder
+public class TreeNode {
+      int val;
+      TreeNode left;
+      TreeNode right;
+      TreeNode() {}
+      TreeNode(int val) { this.val = val; }
+      TreeNode(int val, TreeNode left, TreeNode right) {
+          this.val = val;
+          this.left = left;
+          this.right = right;
+      }
+ }
+ //注意该方法，因为是栈所以要先加rightTree，再加LeftTree.并且一开始就要把root放进Deque里
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if(root == null){
+            return result;
+        }
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.push(root);
+        while(!deque.isEmpty()){
+            TreeNode temp = deque.pop();
+            result.add(temp.val);
+            if(temp.right != null){
+                deque.push(temp.right);
+            }
+            if(temp.left != null){
+                deque.push(temp.left);
+            }
+        }
+        return result;
+    }
+}
+
+//Inorder-应该是左中右，记忆中要把TreeNode指针定义在外部，且不能往deque里加TreeNode
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        //非递归方法
+        List<Integer> result = new ArrayList<>();
+        if(root == null){
+            return result;
+        }
+        Deque<TreeNode> deque = new LinkedList<>();
+        TreeNode cur = root;
+        while(cur != null || !deque.isEmpty()){
+            if(cur != null){
+                deque.push(cur);
+                cur = cur.left;
+            }else{
+                cur = deque.pop();
+                result.add(cur.val);
+                cur = cur.right;
+            }
+        }
+        return result;
+    }
+}
+
+//Postorder:左右中，记忆中要用到Collection的reverse方法
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        //非递归
+        List<Integer> result = new ArrayList<>();
+        if(root == null){
+            return result;
+        }
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.push(root);
+        while(!deque.isEmpty()){
+            TreeNode temp = deque.pop();
+            result.add(temp.val);
+            //先pop的就是右，所以不需要像前序那样先朝stack里push RightTree
+            if(temp.left != null){
+                deque.push(temp.left);
+            }
+            if(temp.right != null){
+                deque.push(temp.right);
+            }
+        }
+        Collections.reverse(result);
+        return result;
+    }
+}
