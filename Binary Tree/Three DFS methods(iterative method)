@@ -83,3 +83,32 @@ class Solution {
         return result;
     }
 }
+//后序遍历的统一写法，前序，中序只需要将中点在不同位置加入即可，注意倒序（因为是栈）
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Deque<TreeNode> deque = new LinkedList<>();
+        if(root != null){
+            deque.push(root);
+        }
+        while(!deque.isEmpty()){
+            TreeNode temp = deque.peek();
+            if(temp != null){
+                deque.pop();
+                deque.push(temp);
+                deque.push(null);
+                if(temp.right != null){
+                    deque.push(temp.right);
+                }
+                if(temp.left != null){
+                    deque.push(temp.left);
+                }
+            }else{
+                deque.pop();    
+                temp = deque.pop();
+                result.add(temp.val);
+            }
+        }
+        return result;
+    }
+}
