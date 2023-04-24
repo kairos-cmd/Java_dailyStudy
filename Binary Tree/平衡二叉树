@@ -1,0 +1,85 @@
+Leetcode 110
+//首先先展示一段错误的代码
+//错误的原因是，平衡二叉树应该保证每个结点的左右子树高度差都不超过1.
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        int dep1 = 0;
+        int dep2 = 0;
+        int depth = 0;
+        if(root == null){
+            return true;
+        }
+        if(root.left != null){
+            dep1 = depthLeft(root.left); 
+        }
+        if(root.right != null){
+            dep2 = depthRight(root.right);
+        }
+        depth = dep1 - dep2;
+        if(depth <= 1 && depth > -2){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public int depthLeft(TreeNode root){
+        if(root == null){
+            return 0;
+        } 
+        int dep1 = depthLeft(root.left);
+        int dep2 = depthLeft(root.right);
+        return Math.max(dep1, dep2)+1;
+    }
+    public int depthRight(TreeNode root){
+        if(root == null){
+            return 0;
+        } 
+        int dep1 = depthRight(root.left);
+        int dep2 = depthRight(root.right);
+        return Math.max(dep1, dep2)+1;
+    }
+}
+
+//后序遍历
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        return getHeight(root) != -1;
+    }
+    public int getHeight(TreeNode root){
+        if(root == null){
+            //当在最下面的时候高度是0
+            return 0; 
+        }
+        int leftHeight = getHeight(root.left);
+        //在左子树不是平衡二叉树直接返回-1，不能放在遍历之后
+        if(leftHeight == -1){ //往上返回-1
+            return -1;
+        }
+        int rightHeight = getHeight(root.right);
+        if(rightHeight == -1){
+            return -1;
+        }
+        int result = 0;
+        if(Math.abs(rightHeight - leftHeight) > 1){
+            result = -1;
+        }else{
+            result = 1+ Math.max(rightHeight, leftHeight);
+        }
+        return result;
+    }
+}
