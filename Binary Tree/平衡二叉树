@@ -55,7 +55,7 @@ class Solution {
     }
 }
 
-//后序遍历
+//后序遍历,本质上还是在求深度
 class Solution {
     public boolean isBalanced(TreeNode root) {
         return getHeight(root) != -1;
