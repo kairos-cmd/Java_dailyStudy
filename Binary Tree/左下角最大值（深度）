@@ -1,3 +1,4 @@
+//513，该题全局变量一个Deep,一个value。没有返回值的函数参数为root和0。在函数里，如果子函数没有左右子节点且深度比之前大就可以更新Deep值
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
