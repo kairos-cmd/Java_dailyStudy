@@ -1,0 +1,52 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+//创建一个数组进行比大小
+    List<Integer> arrayList = new ArrayList<>();
+    public boolean isValidBST(TreeNode root) {
+        if(root == null){
+            return true;
+        }
+        Boolean left = isValidBST(root.left);
+        arrayList.add(root.val);
+        Boolean right = isValidBST(root.right);
+        for(int i = 1; i < arrayList.size(); i++){
+            if(arrayList.get(i) <= arrayList.get(i-1)){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+class Solution {
+    // 双指针优化
+    //按照中序遍历会出现从小到大顺序排列
+    TreeNode pre = null;
+    public boolean isValidBST(TreeNode root) {
+        //递归法
+        if(root == null){
+            return true;
+        }
+        boolean left = isValidBST(root.left);
+        if(pre != null && pre.val <= root.val){
+            return false;
+        }
+        pre = root;
+        boolean right = isValidBST(root.right);
+        return left && right;
+    }
+}
