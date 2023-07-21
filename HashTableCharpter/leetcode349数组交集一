@@ -1,0 +1,122 @@
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        //int[] result = new int[nums2.length];不可使用，因为会存在0元素
+        Set<Integer> hashSet = new HashSet<>();
+        Set<Integer> set = new HashSet<>();
+        for(int i: nums1){
+            hashSet.add(i);
+        }
+        for(int i = 0; i < nums2.length; i++){
+            if(hashSet.contains(nums2[i])){
+                set.add(nums2[i]);
+            }
+        }
+        /*int[] result = new int[set.size()];
+        int j = 0;
+        for(int o: set){
+            result[j++] = o;
+        }*/
+        List<Integer> arrList = new ArrayList<>(set);
+        Integer[] resInt = arrList.toArray(new Integer[arrList.size()]);
+        int[] result = new int[resInt.length];
+        for(int i = 0; i < resInt.length; i++){
+            result[i] = resInt[i].intValue();
+        }
+        return result;
+    }
+}
+
+提问：可否将HashSet转成ArrayList？
+以下是回答部分：
+方法一：使用 ArrayList 的构造函数：
+public class Main {
+    public static void main(String[] args) {
+        HashSet<String> hashSet = new HashSet<>();
+        hashSet.add("apple");
+        hashSet.add("banana");
+        hashSet.add("orange");
+
+        // 将 HashSet 转换为 ArrayList
+        ArrayList<String> arrayList = new ArrayList<>(hashSet);
+
+        // 打印 ArrayList 元素
+        for (String element : arrayList) {
+            System.out.println(element);
+        }
+    }
+}
+方法二：使用 addAll() 方法：
+import java.util.ArrayList;
+import java.util.HashSet;
+
+public class Main {
+    public static void main(String[] args) {
+        HashSet<String> hashSet = new HashSet<>();
+        hashSet.add("apple");
+        hashSet.add("banana");
+        hashSet.add("orange");
+
+        // 创建一个空的 ArrayList
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        // 使用 addAll() 方法将 HashSet 的元素添加到 ArrayList
+        arrayList.addAll(hashSet);
+
+        // 打印 ArrayList 元素
+        for (String element : arrayList) {
+            System.out.println(element);
+        }
+    }
+}
+在这种方法中，我们首先创建了一个空的 ArrayList<String> 对象。然后，
+使用 addAll() 方法将 HashSet 中的元素添加到 ArrayList 中。最终，ArrayList 将包含与 HashSet 相同的元素。
+
+无论你选择哪种方法，HashSet 中的元素将按照无序的方式转换为 ArrayList。请注意，ArrayList 允许重复元素，因此如果 HashSet 中存在重复的元素，它们也将出现在转换后的 ArrayList 中。
+
+在 Java 中，ArrayList 可以接受许多类型，包括原始数据类型和引用类型。
+原始数据类型（基本数据类型）：ArrayList 不能直接接受原始数据类型，例如 int、double、char 等。但可以使用其对应的包装类来接受原始数据类型的值，例如 Integer、Double、Character 等。
+引用类型：ArrayList 可以接受所有的引用类型，例如 String、自定义类对象、数组、接口等。
+import java.util.ArrayList;
+import java.util.HashSet;
+
+public class Main {
+    public static void main(String[] args) {
+        // 使用包装类
+        ArrayList<Integer> intArrayList = new ArrayList<>();
+        intArrayList.add(1);
+        intArrayList.add(2);
+        intArrayList.add(3);
+
+        // 使用自定义类对象
+        class Person {
+            private String name;
+
+            public Person(String name) {
+                this.name = name;
+            }
+
+            public String getName() {
+                return name;
+            }
+        }
+
+        ArrayList<Person> personArrayList = new ArrayList<>();
+        personArrayList.add(new Person("Alice"));
+        personArrayList.add(new Person("Bob"));
+
+        // 使用接口
+        ArrayList<Runnable> runnableArrayList = new ArrayList<>();
+        runnableArrayList.add(() -> System.out.println("Runnable 1"));
+        runnableArrayList.add(() -> System.out.println("Runnable 2"));
+
+        // 使用数组
+        String[] stringArray = {"apple", "banana", "orange"};
+        ArrayList<String> stringArrayList = new ArrayList<>(Arrays.asList(stringArray));
+
+        // 使用HashSet
+        HashSet<String> hashSet = new HashSet<>();
+        hashSet.add("dog");
+        hashSet.add("cat");
+        ArrayList<String> arrayList = new ArrayList<>(hashSet);
+    }
+}
