@@ -159,3 +159,21 @@ public class Main {
 其中，要注意的是
 new Integer[0] 表示创建一个空的 Integer 数组，其中不包含任何元素。这样的数组可以用于表示没有数据的情况，或者在后续的逻辑中动态添加元素。
 需要注意的是，new Integer[0] 创建的是一个引用类型的数组，数组的元素默认初始化为 null。在该示例中，Integer 是一个引用类型，而不是原始数据类型。如果想要创建原始数据类型的数组（如 int[]），则不能直接使用 new int[0]，而是需要使用其他方式来实现。
+
+toArray()是哪些数据结构可以使用的方法？
+
+在 Java 中，toArray() 方法是以下几个数据结构的方法：
+
+Collection 接口：toArray() 方法是 Collection 接口的一个常用方法。它用于将集合中的元素转换为数组。
+List、Set 和其他集合类都实现了 Collection 接口，因此它们都可以使用 toArray() 方法。
+
+ArrayList 类：ArrayList 是 List 接口的实现类，它也提供了 toArray() 方法。使用 toArray() 方法，可以将 ArrayList 中的元素转换为数组。
+
+HashSet 类：HashSet 是 Set 接口的实现类，它同样也提供了 toArray() 方法。通过 toArray() 方法，可以将 HashSet 中的元素转换为数组。
+
+TreeSet 类：TreeSet 是 Set 接口的实现类，同样也包含 toArray() 方法。使用 toArray() 方法，可以将 TreeSet 中的元素转换为数组。
+
+其他集合类：几乎所有实现了 Collection 接口的集合类，包括 LinkedList、LinkedHashSet 等，都支持 toArray() 方法。
+
+需要注意的是，toArray() 方法通常返回一个对象数组（Object[]），如果希望得到指定类型的数组（如整数数组、字符串数组等），
+可以使用带有参数的 toArray(T[] a) 方法，其中 T 是目标数组的类型。这样可以在编译时确定数组的类型，避免了进行强制类型转换。
