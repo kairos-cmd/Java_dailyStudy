@@ -1,0 +1,37 @@
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        //这道题如果用暴力解法比较复杂，因为数组会移动位置，导致长度变小
+        //在一层层循环嵌套中，break终结的是最里面的循环
+        int[] record = new int[26]; //数组长度
+        for(char i: magazine.toCharArray()){
+            record[i-'a']++;
+        }
+        for(char j: ransomNote.toCharArray()){
+            record[j-'a']--;
+        }
+        for(int k: record){  //统计数组是否存在负数
+            if(k<0){
+                return false;
+            }
+        }
+        return true;  //将整个数组遍历完，没有负，则为真
+    }
+}
+=================================================================
+因为使用了Map所以，空间复杂度会到m
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        Map<Character,Integer> map = new HashMap<>();
+        for(char c: magazine.toCharArray()){
+            map.put(c,map.getOrDefault(c,0)+1);
+        }
+        for(int i = 0; i < ransomNote.length(); i++){
+            if(map.containsKey(ransomNote.charAt(i))&&map.get(ransomNote.charAt(i))>0){
+                map.put(ransomNote.charAt(i),map.getOrDefault(ransomNote.charAt(i),0)-1);
+            }else{
+                return false;
+            }
+        }
+        return true;
+    }
+}
