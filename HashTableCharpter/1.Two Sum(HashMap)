@@ -1,0 +1,42 @@
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer,Integer> map = new HashMap<>();
+        int[] result = new int[2];
+        //List<Integer> arrList = new ArrayList<>();
+        for(int i = 0; i < nums.length; i++){
+            int temp = target - nums[i];
+            if(map.containsKey(temp)){//返回boolean类型
+                result[1] = i;//可以修改
+                result[0] = map.get(temp);
+                break;
+            }
+            map.put(nums[i],i);
+        }
+        return result;
+    }
+}
+
+注意该题并不是说数组内元素不可重复，只是要想等于target的值只有一个结果。
+1.为什么不能先遍历nums数组并且把所有值和indices放入map中？
+回答：因为HashMap中不允许Key重复，所以只会存储重复数的最后一位索引(Last index)。
+
+2.当nums = [3,2,4]，为什么会map输出时顺序不同？
+在Java中，HashMap不保证元素的迭代顺序。换句话说，元素的插入顺序和你在迭代时看到的顺序可能不一致。
+这是因为HashMap的内部实现利用了哈希函数，哈希函数将键映射到内部数据结构的某个位置，而这个映射过程与插入顺序无关。
+这也就是为什么当你有一个如nums = [3,2,4]的数组，然后你将这些值和它们的索引插入HashMap后，当你迭代并打印HashMap的内容时，可能会看到与插入顺序不同的顺序。
+
+如果你需要保持插入顺序，可以使用如LinkedHashMap的数据结构，这是一种特殊的HashMap，它使用链表维护了键值对的插入顺序。以下是一个使用LinkedHashMap的示例：
+Map<Integer, Integer> map = new LinkedHashMap<>();
+int[] nums = {3, 2, 4};
+
+for(int i = 0; i < nums.length; i++){
+    map.put(nums[i], i);
+}
+运行这段代码，将始终输出：
+for(int key: map.keySet()){
+    System.out.println("key=" + key + " value=" + map.get(key));
+}
+key=3 value=0
+key=2 value=1
+key=4 value=2
+这正是数组元素和它们的索引的插入顺序。
