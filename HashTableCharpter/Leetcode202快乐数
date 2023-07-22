@@ -1,0 +1,34 @@
+class Solution {
+    public boolean isHappy(int n) {
+        Set<Integer> set = new HashSet<>();
+        while(n != 1 && !set.contains(n)){
+            set.add(n);
+            n = getSquare(n);
+        }
+        return 1==n;
+    }
+    public int getNextNumber(int n){
+        int res = 0;
+        while(n > 0){
+            int temp = n % 10;
+            res += temp * temp;
+            n = n / 10;
+        }
+        return res;
+    }
+}
+
+
+这是一个用来检测一个数是否为“快乐数”的Java程序。快乐数定义为一个数，在对其进行反复的"将每位上的数字平方，然后相加"操作之后，最终得到的数为1。
+
+该算法的时间复杂度并非直接由n决定，而是由不断操作的次数决定，我们一般标记这个次数为m。
+
+对于函数isHappy(int n)，该函数包含一个while循环，这个循环的次数直接取决于getNextNumber(int n)这个函数处理n的次数，即m次。
+
+对于函数getNextNumber(int n)，它的运行时间取决于n的位数。在计算机中，一个整数n的位数大致可以用log(n)表示（底数为10）。所以，该函数的时间复杂度为O(log(n))。
+
+综上，整个程序的时间复杂度为O(m * log(n))。
+
+空间复杂度主要来自于Set用于存储计算过的数，最多会存储m个数，所以空间复杂度为O(m)。
+
+注意，由于m并非直接由n决定，它实际上是由不断操作的次数决定的，而这个次数取决于输入n的性质，具体数值难以确定。
