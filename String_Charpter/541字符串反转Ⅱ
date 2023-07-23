@@ -39,6 +39,34 @@ class Solution {
     }
 }
 =============================================================================================
+// 解法3
+class Solution {
+    public String reverseStr(String s, int k) {
+        char[] ch = s.toCharArray();
+        // 1. 每隔 2k 个字符的前 k 个字符进行反转
+        for (int i = 0; i< ch.length; i += 2 * k) {
+            // 2. 剩余字符小于 2k 但大于或等于 k 个，则反转前 k 个字符
+            if (i + k <= ch.length) {
+                reverse(ch, i, i + k -1);
+                continue;
+            }
+            // 3. 剩余字符少于 k 个，则将剩余字符全部反转
+            reverse(ch, i, ch.length - 1);
+        }
+        return  new String(ch);
+
+    }
+    // 定义翻转函数
+    public void reverse(char[] ch, int i, int j) {
+    for (; i < j; i++, j--) {
+        char temp  = ch[i];
+        ch[i] = ch[j];
+        ch[j] = temp;
+    }
+
+    }
+}
+=============================================================================================
 提问：Arrays.toString(ch)和new String(ch)结果有些许不同?
 答: 确实如此，Arrays.toString(char[]) 和 new String(char[]) 这两个方法返回的结果会有些许不同。
     new String(char[]) 构造函数会直接将字符数组转化为一个字符串。例如，如果我们有一个字符数组 {'H', 'e', 'l', 'l', 'o'}，new String(char[]) 会返回 "Hello"。
