@@ -18,3 +18,43 @@ class Solution {
         return res.toString();
     }
 }
+=====================================================================================
+现在写的代码：
+class Solution {
+    public String reverseStr(String s, int k) {
+        char[] ch = s.toCharArray();
+        for(int i = 0; i < ch.length; i += 2*k){
+            //StringBuffer temp = new StringBuffer();
+            int start = i;
+            int end = Math.min(ch.length - 1, i + k - 1);
+            while(start < end){
+                char temp = ch[start];
+                ch[start] = ch[end];
+                ch[end] = temp;
+                start++;
+                end--;
+            }
+        }
+        return new String(ch);
+    }
+}
+=============================================================================================
+提问：Arrays.toString(ch)和new String(ch)结果有些许不同?
+答: 确实如此，Arrays.toString(char[]) 和 new String(char[]) 这两个方法返回的结果会有些许不同。
+    new String(char[]) 构造函数会直接将字符数组转化为一个字符串。例如，如果我们有一个字符数组 {'H', 'e', 'l', 'l', 'o'}，new String(char[]) 会返回 "Hello"。
+    
+    char[] ch = {'H', 'e', 'l', 'l', 'o'};
+    String str = new String(ch);
+    System.out.println(str);  // 输出：Hello
+    
+    另一方面，Arrays.toString(char[]) 方法返回的是一个表示数组内容的字符串，其中的元素由数组元素的 toString() 方法结果组成，各元素之间用逗号和空格隔开，
+    并且在整个字符串前后加上方括号 [ 和 ]。例如，对于同样的字符数组 {'H', 'e', 'l', 'l', 'o'}，Arrays.toString(char[]) 返回的是 "[H, e, l, l, o]"。
+    
+    char[] ch = {'H', 'e', 'l', 'l', 'o'};
+    String str = Arrays.toString(ch);
+    System.out.println(str);  // 输出：[H, e, l, l, o]
+
+提问：intArray[i] = integerArray[i];这样是否可行呢?
+答:   可行。是的，如果你想将 Integer[] 数组转换为 int[] 数组，在 Java 5 及以上版本，你可以直接赋值，而无需调用 intValue()。
+      这是因为 Java 提供了自动装箱和自动拆箱特性，它会自动在基本类型和它们的包装类之间进行转换。只是如果 Integer[] 数组中有 null 元素，
+      当你试图自动拆箱为 int 类型时，会抛出 NullPointerException。
