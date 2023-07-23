@@ -30,3 +30,5 @@ class Solution {
         return result;
     }
 }
+
+要保证不跳过第一个元素,所以j循环里面if(nums[j]==nums[j-1]&&j>i+1) {continue;} 而不是 j > i
