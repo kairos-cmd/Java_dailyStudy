@@ -1,1 +1,89 @@
+先来看一个错误代码：
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] > 0){
+                return result;
+            }
+            /*while(i > 0 && nums[i-1] == nums[i]){
+                continue;
+            }*/
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            int left = i+1, right = nums.length-1; 
+            while(right > left){
+                int temp = nums[left] + nums[right] + nums[i];
+                if(temp > 0){
+                    right--;
+                }else if(temp < 0){
+                    left++;
+                }else{
+                    result.add(Arrays.asList(nums[i],nums[left],nums[right]));
+                    while(nums[left] == nums[left+1]&&right > left){ 
+                        //这里需要right > left不然会在重复元素时越界
+                            left++;
+                    }
+                    while(nums[right] == nums[right-1]&&right > left){
+                        right--;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+}
+错误点在于else语句里,right和left各自不重复的时候，left和right没有变化，进入无限循环
+=========================================================================
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        for(int i=0; i < nums.length; i++){
+            if(i>0&&nums[i]==nums[i-1]) {continue;} //返回到开头
+            // while(i>0&&nums[i]==nums[i-1]) {i++;} //超出范围的风险
+            int left = i+1;
+            int right = nums.length - 1;
+            while(left < right){
+                int sum = nums[i]+nums[left]+nums[right];
+                if(sum > 0){
+                    right--;
+                }else if(sum<0){
+                    left++;
+                }else{
+                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    //如果有重复的元素，接下来要进行去重
+                    while(right>left&&nums[left+1]==nums[left]) {left++;}
+                    while(right>left&&nums[right-1]==nums[right]) {right--;}
+                    //这里需要right > left且要放在&& ||前面（短路）不然会在重复元素时越界
+                    right--;
+                    left++;
+                }
+            }
+        }
+        return result;
+    }
+}
 
+还要小问题：
+1.一定要把right > left放在与判断的前面吗？
+Java 中的 && 和 || 运算符具有“短路”行为。也就是说，它们只会在需要的时候才会计算第二个操作数。
+
+对于 &&（逻辑与）：如果左边的操作数是 false，那么整个表达式就是 false，无论右边的操作数是什么。在这种情况下，右边的操作数将不会被计算。
+对于 ||（逻辑或）：如果左边的操作数是 true，那么整个表达式就是 true，无论右边的操作数是什么。在这种情况下，右边的操作数将不会被计算。
+所以，你需要将 right > left 放在前面，这样当 right <= left 时，不会去检查 nums[left] == nums[left+1] 或 nums[right] == nums[right-1]，这防止了数组越界。
+while(right > left && nums[left] == nums[left+1]){ 
+    left++;
+}
+
+while(right > left && nums[right] == nums[right-1]){
+    right--;
+}
+如果你颠倒这两个条件，那么当 right <= left 时，它还是会去检查 nums[left] == nums[left+1] 或 nums[right] == nums[right-1]，这可能会导致数组越界。
+
+这道题还有个核心问题：
+如果你在添加 result.add(Arrays.asList(nums[i], nums[left], nums[right])) 之后直接进行 left++ 和 right--，
+有可能会跳过一些元素的检查。在这种特定的问题中，由于我们在添加元素到结果集之前已经确保了 nums[left] + nums[right] + nums[i] == 0，
+我们可以确定被跳过的元素（如果有的话）不会构成新的有效三元组，因为它们仍然等于当前的 nums[left] 或 nums[right]，和仍然会为零。
