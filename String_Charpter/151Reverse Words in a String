@@ -95,3 +95,14 @@ setCharAt() 是 StringBuilder 和 StringBuffer 类中的一个方法，用于在
 StringBuilder sb = new StringBuilder("Hello, World!");
 sb.setCharAt(0, 'h');
 System.out.println(sb); // "hello, World!"
+============================================================
+关于时间复杂度问题？
+
+回答：它的主要部分包括：
+removeSpaces方法：该方法遍历输入字符串，创建一个新的StringBuffer对象，并添加所需的字符。这个过程的时间复杂度是O(n)，其中n是输入字符串的长度。
+reverseEachWords方法：这个方法也遍历了StringBuffer对象，其中包含一个内部循环用于找到并反转每个单词。尽管有一个内部循环，但每个字符只被访问和处理一次，因此总体时间复杂度也是O(n)。
+因此，reverseWords方法的总体时间复杂度是O(n)。
+
+这里的空间复杂度也是O(n)，因为我们创建了一个新的StringBuffer对象来存储处理后的字符串。
+
+请注意，时间复杂度和空间复杂度的计算通常基于输入大小的最坏情况。对于这个程序，我们假设输入字符串的长度为n。
