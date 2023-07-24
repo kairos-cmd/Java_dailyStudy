@@ -1,0 +1,97 @@
+class Solution {
+    public String reverseWords(String s) {
+        StringBuffer sb = removeSpaces(s);
+        sb.reverse();
+        //翻转整个StringBuffer
+        reverseEachWords(sb);
+        return sb.toString();
+    }
+
+    //移动多余的空格和两边的空格
+    public StringBuffer removeSpaces(String s){
+        int left = 0;
+        int right = s.length()-1;
+        while(s.charAt(left) == ' '){
+            left++;
+        }
+        while(s.charAt(right) == ' '){
+            right--;
+        }
+        StringBuffer bf = new StringBuffer();
+        //从left到right一路从左到右都放进去
+        while(left <= right){
+            char ch = s.charAt(left);
+            if(ch != ' ' || bf.charAt(bf.length() - 1) != ' '){
+                bf.append(ch);
+            }
+            left++;
+        }
+        /*for(int i=0; i < s.length(); i++){
+            if((i>0 && s.charAt(i) == ' ' && s.charAt(i-1) == ' ') || s.charAt(0) == ' '){
+                continue;
+            }
+        }*/
+        return bf;
+    }
+
+    //将每个单词都翻转一下，因为此时整个字符串都是反的
+    public void reverseEachWords(StringBuffer sb){
+        int start = 0;
+        int duo = 1;
+        int end = sb.length();
+        while(start < end){
+            while(duo < end && sb.charAt(duo) != ' '){
+                duo++;
+            }
+            int update_duo = duo; 
+            while(start < duo){
+                char temp = sb.charAt(start);
+                sb.setCharAt(start,sb.charAt(duo-1));
+                sb.setCharAt(duo-1,temp);
+                start++;
+                duo--;
+            }
+            start = update_duo + 1;
+            duo = start + 1;
+        }
+    }
+
+}
+====================================================================================================================================
+
+首先，字符串可否使用增强for循环?
+在Java中，字符串（String）是一个特殊的类，它不是一个集合或数组，因此你不能直接在字符串上使用增强for循环。
+然而，你可以将字符串转换为字符数组，然后对该数组使用增强for循环。另外，在Java中，任何实现了Iterable接口的类都可以使用增强for循环（也称为for-each循环）。
+所有的Collection接口的实现类，如List, Set, Queue等都实现了Iterable接口，因此它们都可以使用for-each循环。这是一个例子：
+String s = "Hello, World!";
+for(char c : s.toCharArray()){
+    System.out.println(c);
+}
+
+List<String> list = new ArrayList<>();
+for (String s : list) {
+    System.out.println(s);
+}
+
+Set<String> set = new HashSet<>();
+for (String s : set) {
+    System.out.println(s);
+}
+
+Queue<String> queue = new LinkedList<>();
+for (String s : queue) {
+    System.out.println(s);
+}
+===============================================
+if(i>0 && s.charAt(i) == s.charAt(i-1) == ' '){
+                continue;
+            }检查语法错误
+回答：在Java中，你不能将两个相等性检查（==）连在一起这样写。这是因为相等性检查（==）的运算优先级比逻辑与运算符（&&）的优先级高。 
+     所以，你的代码实际上尝试比较char值和boolean值，这是不允许的。
+================================================
+setCharAt()这个方法作用是什么？
+
+setCharAt() 是 StringBuilder 和 StringBuffer 类中的一个方法，用于在指定索引处设置新的字符。
+StringBuilder sb = new StringBuilder("Hello, World!");
+sb.setCharAt(0, 'h');
+System.out.println(sb); // "hello, World!"
