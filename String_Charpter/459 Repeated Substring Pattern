@@ -1,0 +1,50 @@
+class Solution {
+    public boolean repeatedSubstringPattern(String s) {
+        //这组是原始的部分匹配表应用情况
+        if(s.equals("")){
+            return false;
+        }
+        int len = s.length();
+        int[] next = new int[len];
+        char[] temp = s.toCharArray();
+        for(int i = 1, j = 0; i < len; i++){
+            while(j>0 && temp[j] != temp[i]){
+                j = next[j-1];
+            }
+            if(temp[j] == temp[i]){
+                j++;
+            }
+            next[i] = j;
+        }
+        if(next[len-1] > 0 && len % (len-next[len-1]) == 0){
+            return true;
+        }
+        //这组是增加一个空格
+        /*if(s.equals("")){
+            return false;
+        }
+        int len = s.length();
+        s = " "+s;
+        char[] chars = s.toCharArray();
+        int[] next = new int[len+1];
+        for(int i = 2, j = 0; i <=len; i++){
+            while(j > 0 && chars[j+1] != chars[i]){
+                j = next[j];
+            }
+            if(chars[j+1] == chars[i]){
+                j++;
+            }
+            next[i] = j;
+        }
+        if(next[len] > 0 && len%(len - next[len]) == 0){
+            return true;
+        }*/
+        return false;
+    }
+}
+
+在部分匹配表（next数组）中，next[len-1]表示的是整个模式字符串的最长公共前缀和后缀的长度。如果原字符串能由它的一个子串重复多次构成，那么这个子串就是原字符串的一个前缀，同时也是一个后缀，长度为len - next[len-1]。
+
+这就解释了为什么这个判断语句要检查len % (len - next[len-1]) == 0。如果len - next[len-1]能够被len整除，那么说明原字符串的长度是这个子串长度的整数倍，即原字符串可以由这个子串重复多次构成。
+
+如果next[len-1]为0，那说明原字符串没有公共的前缀和后缀，也就是说原字符串不能由它的任何一个子串重复多次构成。所以这个判断语句首先要检查next[len-1] > 0。
