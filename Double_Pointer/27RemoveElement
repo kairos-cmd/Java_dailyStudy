@@ -18,7 +18,9 @@ class Solution {
     public int removeElement(int[] nums, int val) {
         int left = 0;
         int right = nums.length - 1;
+//right >= 0是因为如果只有一位数且刚好等于val,此时right>0无法取到
         while(right >= 0 && nums[right] == val) right--; //将right移到从右数第一个值不为val的位置
+//left<=rihgt rather than left<right，否则会取不到最后一个非val数
         while(left <= right) {
             if(nums[left] == val) { //left位置的元素需要移除
                 //将right位置的元素移到left（覆盖），right位置移除
@@ -26,6 +28,7 @@ class Solution {
                 right--;
             }
             left++;
+//再判断一次，防止移到新位置出现nums[right] == val
             while(right >= 0 && nums[right] == val) right--;
         }
         return left;
