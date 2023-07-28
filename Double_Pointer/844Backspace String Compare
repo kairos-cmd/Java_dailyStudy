@@ -14,3 +14,30 @@ class Solution {
         return String.valueOf(stack);
     }
 }
+=================================================================================================
+提问:空栈是否能pop?
+在大多数编程语言中，如果你尝试从一个空的栈（Stack）中弹出（pop）一个元素，通常会抛出一个异常。
+
+例如，在Java中，如果你试图从一个空的Stack对象中调用pop()方法，将会抛出EmptyStackException。这是因为你试图访问的元素不存在。
+
+因此，在调用pop()方法之前，你应该总是先检查栈是否为空。在Java中，你可以使用isEmpty()方法来完成这个操作：
+
+Stack<Integer> stack = new Stack<Integer>();
+if (!stack.isEmpty()) {
+    stack.pop();
+} else {
+    System.out.println("The stack is empty!");
+}
+
+这段代码只有在栈不为空的时候才会尝试弹出元素，因此不会抛出异常。如果栈为空，它将会输出一个消息，告诉你栈是空的。
+======================================================================================================
+提问：String.valueOf()是什么方法？
+
+在Java中，String.valueOf()是一个静态方法，可以将不同类型的值转换成字符串。这个方法可以接受所有基本数据类型，
+如int、long、boolean、char、float、double等，还可以接受Object作为参数。转换后的结果是该参数的字符串表示形式。
+在这些例子中，String.valueOf(i)将会返回字符串 "123"，String.valueOf(b)将会返回字符串 "true"。
+
+如果你传递给String.valueOf()方法一个null对象，它将返回字符串 "null"，而不是抛出一个空指针异常。这一点在处理可能为null的对象时特别有用。
+
+本质上，valueOf() 方法的作用是调用对象的 toString() 方法并返回结果。如果该对象的类没有覆写 toString() 方法，
+那么 valueOf() 将返回对象的类名和它的哈希码的无符号十六进制表示（由 Object 类的 toString() 方法提供）。如果对象为 null，则返回字符串 "null"。
