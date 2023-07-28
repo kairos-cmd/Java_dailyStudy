@@ -1,0 +1,152 @@
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        int slow = nums.length - 1;
+        int fast = 0;
+        int[] result = new int[nums.length];
+        int k = nums.length-1;
+        while(fast <= slow){
+            if(nums[fast] * nums[fast] < nums[slow] * nums[slow]){
+                result[k] = nums[slow]*nums[slow];
+                k--;
+                slow--;
+            }else{
+                result[k] = nums[fast]*nums[fast];
+                k--;
+                fast++;
+            }
+        }
+        return result;
+    }
+}
+=================================================================================================================
+下面这段代码是错误的：用作对自己的提醒和纠错
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        StringBuffer sb = new StringBuffer();
+        while(left <= right){
+            if(nums[left] * nums[left] < nums[right] * nums[right]){
+                sb.append(nums[right]*nums[right]);
+                sb.append(" ");
+                right--;
+            }else{
+                sb.append(nums[left] * nums[left]);
+                sb.append(" ");
+                left++;
+            }
+        }
+        String str = sb.reverse().toString().trim();
+        String[] strArray = str.split(" ");
+        int[] intArray = new int[strArray.length];
+        for(int i = 0; i < strArray.length; i++){
+            intArray[i] = Integer.parseInt(strArray[i]);
+        }
+        return intArray;
+    }
+}
+
+1.错误的原因：
+First，这段代码的目的是将输入的整数数组的每个元素平方，然后返回一个新的数组，该数组按非递减顺序排序。但是，这段代码有一些问题。
+
+主要问题是：在while循环中，你正确地找出了最大的平方数并将它们附加到StringBuilder中，但你反转了整个StringBuilder，而不仅仅是数字。这样，你就反转了整个数字，导致结果不正确。
+
+假设输入是[-4, -1, 0, 3, 10]，StringBuilder最后会包含"0 1 9 16 100 "，但反转后就变成了" 001 61 9 1 0"，然后被拆分为{"001", "61", "9", "1", "0"}。这显然不是你想要的结果。
+
+你可以通过创建一个足够大的数组，然后从后往前填充数组，来解决这个问题。这样可以保证你是按正确的顺序填充数组。
+
+修改方法：使用Collection接口里的reverse方法，该方法不是按字符反转，是按元素的顺序进行反转.
+===================================================================================================================================
+修改后的正确可运行代码：
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        List<Integer> arrList = new ArrayList();
+        while(left <= right){
+            if(nums[left] * nums[left] < nums[right] * nums[right]){
+                arrList.add(nums[right]*nums[right]);
+                right--;
+            }else{
+                arrList.add(nums[left] * nums[left]);
+                left++;
+            }
+        }
+        Collections.reverse(arrList);//如果不想改变原List，就先复制一份
+        //List<Integer> copyList = new ArrayList<>(arrList);  // 复制列表
+        Integer[] intArr = arrList.toArray(new Integer[0]);//Integer[0]表示任意大小
+        int[] result = new int[intArr.length];
+        for(int i = 0; i < result.length; i++){
+            result[i] = intArr[i];
+        }
+        return result;
+    }
+}
+
+有些小细节要声明一下：
+1.如何将一个字符串变成int数组？
+String numberStr = "1,2,3,4,5";
+String[] numberStrArray = numberStr.split(",");
+int[] numbers = new int[numberStrArray.length];
+for (int i = 0; i < numberStrArray.length; i++) {
+    numbers[i] = Integer.parseInt(numberStrArray[i]);
+}
+Or
+String numberStr = "12345";
+int[] numbers = new int[numberStr.length()];
+for (int i = 0; i < numberStr.length(); i++) {
+    numbers[i] = Integer.parseInt(String.valueOf(numberStr.charAt(i)));
+}
+
+2.trim()方法是什么?
+在Java中，trim()是一个字符串（String）类的方法，用于去除字符串首尾的空白字符。
+
+这个空白字符可以是空格，也可以是其他任何被视为空白的字符，例如制表符 \t，换行符 \n等。举个例子：
+String s = "  Hello, World!  ";
+s = s.trim();
+执行这段代码后，字符串s的值就变成了"Hello, World!"，它的首尾空格被trim()方法去除了。
+
+注意，trim()方法返回的是一个新的字符串，原字符串本身并不会被改变。这是因为在Java中，字符串是不可变的（immutable）。
+这意味着字符串一旦被创建，就不能被修改。所有看似是对字符串进行修改的操作，实际上都是创建了一个新的字符串。
+
+3.toArray方法可以用在所有集合吗?
+toArray() 方法是 Java 中 Collection 接口的方法，所以所有实现了 Collection 接口的类（比如 ArrayList, HashSet, LinkedList, PriorityQueue, TreeSet 等）都可以使用这个方法。
+
+在使用 toArray() 方法时，通常有两种形式：
+
+Object[] toArray()：这个方法会返回一个 Object[] 数组，该数组包含了集合中所有的元素。
+
+<T> T[] toArray(T[] a)：这个方法会返回一个类型为 T 的数组，该数组包含了集合中所有的元素。如果集合适合指定的数组，那么它就会被直接返回。
+否则，一个新的数组将被分配。运行时类型为指定的数组，大小为集合的大小。
+
+注意，toArray() 方法返回的数组是一个新的数组，它和原始的集合没有任何关系。如果你更改了返回的数组的内容，原始的集合不会发生任何改变。
+
+4.new String[0]这个只决定新数组的类型吗？
+在这种上下文中，new String[0] 确实主要用于决定新数组的类型。这里创建了一个长度为0的 String 数组，
+仅仅是为了提供一个正确的类型给 toArray() 方法。toArray() 方法根据这个输入数组的类型，创建一个新的、具有相同类型、并且长度等于列表长度的数组。
+
+然而，如果传入的数组长度大于或等于列表的长度，toArray() 方法将会使用提供的数组，而不是创建新的。比如：
+List<String> list = new ArrayList<>();
+list.add("apple");
+list.add("banana");
+
+String[] array = new String[5];
+String[] stringArray = list.toArray(array);
+
+System.out.println(Arrays.toString(stringArray));  // 输出：[apple, banana, null, null, null]
+
+在这个例子中，我们提供的数组长度大于列表的长度。所以 toArray() 方法直接使用了我们提供的数组。列表的元素被复制到了数组的前面部分，而数组的其余部分则被填充为 null。
+
+总结一下，传入 toArray() 的数组的作用有两个：
+
+决定了返回的数组的类型。
+如果长度大于或等于列表长度，该数组会被直接使用，而不是创建新的数组。
+
+5.别的方法将arraylist转变为int数组
+ArrayList<Integer> arrayList = new ArrayList<>();
+// 添加元素到arrayList的代码...
+
+int[] array = new int[arrayList.size()];
+for (int i = 0; i < arrayList.size(); i++) {
+    array[i] = arrayList.get(i);  // 自动拆箱，将Integer转化为int
+}
