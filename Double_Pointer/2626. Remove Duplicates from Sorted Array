@@ -1,0 +1,30 @@
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if(nums.length == 0) return 0;
+        int slow = 0;
+        for(int fast=1; fast < nums.length; fast++){
+            if(nums[fast] != nums[slow]){
+                //只要第一个，第一个后面都不要
+                /*if(fast - slow > 1){ 
+                    nums[slow+1] = nums[fast];
+                }*/
+                nums[slow+1] = nums[fast]; 
+                slow++;
+            }
+        }
+        // int slow = 0;
+        // int fast = 1;
+        // while(fast < nums.length){
+        //     if(nums[fast] != nums[slow]){
+        //         nums[slow+1] = nums[fast]; 
+        //         /*if(fast - slow > 1){
+        //             //不相等赋值给slow下一位索引
+        //             nums[slow+1] = nums[fast]; 
+        //         }*/
+        //         slow++;
+        //     }
+        //     fast++;
+        // }
+        return slow+1;
+    }
+}
