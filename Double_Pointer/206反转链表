@@ -1,3 +1,4 @@
+双指针解法：
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -20,5 +21,21 @@ class Solution {
             cur = temp;
         }
         return prev;
+    }
+}
+================================================================================================================
+递归解法：
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        return reverseCur(null,head);
+    }
+     public ListNode reverseCur(ListNode prev, ListNode cur){
+        if( cur == null){
+            return prev;
+        }
+        ListNode temp = null;
+        temp = cur.next;
+        cur.next = prev;
+        return reverseCur(cur,temp);
     }
 }
