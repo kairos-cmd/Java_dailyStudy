@@ -46,3 +46,26 @@ public class Solution {
         return null;
     }
 }
+
+如果在构造函数中没有显式为next赋值为null，Java会默认将实例变量赋予其默认值。对于对象引用类型，其默认值为null。
+
+在这个ListNode类的构造函数中，如果没有显式为next赋值为null，那么它的值将在创建ListNode对象时自动被设置为null。这是因为实例变量在Java中会被自动初始化为其类型的默认值。
+
+所以，即使构造函数没有next = null;这样的语句，next在创建ListNode对象时会自动被设置为null。以下是没有显式设置next为null的构造函数：
+
+public class ListNode {
+    int val;
+    ListNode next;
+
+    // 构造函数
+    ListNode(int x) {
+        val = x;
+        // next在这里并没有显式赋值为null
+    }
+}
+在使用这个构造函数创建对象时，next将会被自动初始化为null：
+
+ListNode newNode = new ListNode(5);
+// newNode的val为5，newNode的next为null
+
+因此，不必担心在构造函数中没有显式设置next为null，它会在初始化时自动获得null值。
