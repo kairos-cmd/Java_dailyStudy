@@ -1,0 +1,78 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Deque<TreeNode> deque = new LinkedList<>();
+        if(root != null){
+            deque.push(root);
+        }
+        while(!deque.isEmpty()){
+            TreeNode temp = deque.peek();
+            if(temp != null){
+                deque.pop();
+                deque.push(temp);
+                deque.push(null);
+                if(temp.right != null){
+                    deque.push(temp.right);
+                }
+                if(temp.left != null){
+                    deque.push(temp.left);
+                }
+            }else{
+                deque.pop();    
+                temp = deque.pop();
+                result.add(temp.val);
+            }
+        }
+        return result;
+    }
+}
+        //非递归
+//         List<Integer> result = new ArrayList<>();
+//         if(root == null){
+//             return result;
+//         }
+//         Deque<TreeNode> deque = new LinkedList<>();
+//         deque.push(root);
+//         while(!deque.isEmpty()){
+//             TreeNode temp = deque.pop();
+//             result.add(temp.val);
+//             //先pop的就是右，所以不需要像前序那样先朝stack里push RightTree
+//             if(temp.left != null){
+//                 deque.push(temp.left);
+//             }
+//             if(temp.right != null){
+//                 deque.push(temp.right);
+//             }
+//         }
+//         Collections.reverse(result);
+//         return result;
+//     }
+// }
+    //     List<Integer> result = new ArrayList<>();
+    //     postorder(root, result);
+    //     return result;
+    // }
+    // public void postorder(TreeNode root, List<Integer> result){
+    //     if(root == null){
+    //         return;
+    //     }
+    //     postorder(root.left, result);
+    //     System.out.println(result);
+    //     postorder(root.right, result);
+    //     result.add(root.val);
+    
