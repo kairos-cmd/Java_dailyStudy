@@ -1,0 +1,40 @@
+看到题目描述，首先判断一个树是否是另一棵树的子树，很明显想到可以用递归，但是两棵树完全相同也可以看做一棵树是另一棵树的子树。
+所以自然而然想到用一个判断两棵树是否相同的递归函数。
+错误代码：
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        if(root == null){
+            return false;
+        }
+        return isSameTree(root, subRoot) || isSameTree(root.left, subRoot) 
+        || isSameTree(root.right,subRoot);
+    }
+    public boolean isSameTree(TreeNode node, TreeNode subRoot){
+        if(node == null && subRoot == null){
+            return true;
+        }
+        if(node == null || subRoot == null){
+            return false;
+        }
+        if(node.val != subRoot.val){
+            return false;
+        }
+        return isSameTree(node.left, subRoot.left) && 
+        isSameTree(node.right, subRoot.right);
+    }
+}
