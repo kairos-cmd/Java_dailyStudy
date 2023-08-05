@@ -75,7 +75,7 @@ class Solution {
 这就是为什么在修正后的代码中，交换节点的值可以正确地反转树的结构，因为你实际上是在修改内存中节点对象的值，而不仅仅是交换引用。
 ===================================================================================================================
 以下是错误代码：
-/ public void swap(TreeNode left, TreeNode right){ //Java是值Pass by Value，搞清楚传进去的参数有没有被复制，还是原来的参数是关键
+/ public void swap(TreeNode left, TreeNode right){ //Java是值Pass by Value，搞清楚传进去的参数有没有被复制，实际参数内容是否改变是关键
     //     TreeNode temp = left;
     //     left = right;
     //     right = temp;
