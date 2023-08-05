@@ -32,3 +32,26 @@ class Solution {
         return compareLeft && compareRight;
     }
 }
+==============================================================================
+错误的代码：因为是要结构相同而不是结构不等，所以需要改变遍历的结点，不再是左子树的左节点和右子树的右节点，而是左子树左节点和右子树左节点
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        return compare(p, q);
+    }
+    public boolean compare(TreeNode p, TreeNode q){
+        if(p == null && q == null){
+            return true;
+        }else if(p == null || q == null){
+            return false;
+        }else if(p.val != q.val){
+            return false;
+        }else{
+            boolean outer = compare(p.left, q.right);
+            boolean inner = compare(p.right, q.left);
+            //正确的版本在下面：
+            //boolean outer = compare(p.left, q.left);
+            //boolean inner = compare(p.right, q.right);
+            return outer && inner;
+        }
+    }
+}
