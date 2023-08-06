@@ -1,0 +1,55 @@
+首先，要清楚一点是，最大深度中children子节点的定义是List<Node>
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List<Node> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+    public int maxDepth(Node root) {
+        if(root == null){
+            return 0;
+        }
+        int depth = 0;
+        Queue<Node> que = new LinkedList<>();
+        que.offer(root);
+        while(!que.isEmpty()){
+            depth++;
+            int len = que.size();
+            while(len>0){
+                Node temp = que.poll();
+                for(int i=0; i < temp.children.size(); i++){
+                    if(temp.children.get(i) != null){ //不加Null判断会报错
+                        que.offer(temp.children.get(i));
+                    }
+                }
+                len--;
+            }
+        }
+        return depth;
+        //后序遍历
+        // if(root == null){
+        //     return 0;
+        // }
+        // int depth = 0;
+        // if(root.children != null){
+        //     for(Node child: root.children){
+        //         depth = Math.max(depth, maxDepth(child)); //不能将List<Node>转换成Node
+        //     }
+        // }
+        // return depth+1;  //中节点
+    }
+}
