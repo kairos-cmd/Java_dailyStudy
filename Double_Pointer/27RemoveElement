@@ -18,7 +18,7 @@ class Solution {
     public int removeElement(int[] nums, int val) {
         int left = 0;
         int right = nums.length - 1;
-//right >= 0是因为如果只有一位数且刚好等于val,此时right>0无法取到
+//right >= 0是因为如果只有一位数且刚好等于val,此时right>0无法取到; 而right--也是while的循环条件
         while(right >= 0 && nums[right] == val) right--; //将right移到从右数第一个值不为val的位置
 //left<=rihgt rather than left<right，否则会取不到最后一个非val数
         while(left <= right) {
