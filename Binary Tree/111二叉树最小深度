@@ -86,3 +86,20 @@ class Solution {
 //         return Math.min(leftDepth, rightDepth) + 1;
 //     }
 // }
+==============================================================================================
+上面的递归解法也可以写成如下这种形式：
+//确立终止条件,后序遍历求最小高度一样可以得到最小深度
+//public int maxDepth(TreeNode root){
+//        if(root == null){
+//            return 0;
+//        }
+//        int leftDepth = minDepth(root.left);
+//        int rightDepth = minDepth(root.right);
+//        if(root.left == null && root.right != null){
+//            return 1+rightDepth;
+//        }
+//        if(root.left != null && root.right == null){
+//            return 1+leftDepth;
+//        }
+//        return 1+Math.min(leftDepth,rightDepth);
+//}
