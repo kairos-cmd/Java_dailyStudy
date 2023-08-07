@@ -15,9 +15,11 @@
  */
 class Solution {
     public int countNodes(TreeNode root) {
+        //第一个终止条件是子树为空
         if(root == null){
             return 0;
         }
+        //第二个终止条件是子树为满二叉树(full binary tree)
         TreeNode leftChild = root.left;
         TreeNode rightChild = root.right;
         int leftDepth = 0;
