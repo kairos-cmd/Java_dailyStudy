@@ -87,6 +87,7 @@ class Solution {
 //     }
 // }
 ==============================================================================================
+最新练习时间：美国时间8月6号10：32
 上面的递归解法也可以写成如下这种形式：
 //确立终止条件,后序遍历求最小高度一样可以得到最小深度
 //public int maxDepth(TreeNode root){
@@ -103,3 +104,47 @@ class Solution {
 //        }
 //        return 1+Math.min(leftDepth,rightDepth);
 //}
+=================================================================================================
+层序遍历也可以写成以下这种样式：关键在于无左节点或者无右节点时，不能算作最小深度，必须左右节点都不存在才行
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int minDepth(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.offer(root);
+        int result = 0;
+        while(!deque.isEmpty()){
+            int size = deque.size();
+            result++;
+            while(size-- > 0){
+                TreeNode temp = deque.poll();
+                if(temp.left == null && temp.right == null){
+                    return result;
+                }
+                if(temp.left != null){
+                    deque.offer(temp.left);
+                }
+                if(temp.right != null){
+                    deque.offer(temp.right);
+                }
+            }
+        }
+        return result;
+    }
+}
