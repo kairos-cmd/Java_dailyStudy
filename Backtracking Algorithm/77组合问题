@@ -1,0 +1,69 @@
+class Solution {
+    //定义两个全局变量
+    List<List<Integer>> result = new ArrayList<>();
+    LinkedList<Integer> path = new LinkedList<>();
+    public List<List<Integer>> combine(int n, int k) {
+        combineHelper(n,k,1);
+        return result;
+    }
+    public void combineHelper(int n, int k, int startIndex){
+        //终止条件
+        if(path.size()==k){
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for(int i = startIndex; i <= n - (k-path.size()) + 1; i++){ //剪枝
+            path.add(i);
+            combineHelper(n,k,i+1);
+            path.removeLast();
+        }
+    }
+}
+剪枝操作(purning)：所以，可以剪枝的地方就在递归中每一层的for循环所选择的起始位置。
+
+如果for循环选择的起始位置之后的元素个数 已经不足 我们需要的元素个数了，那么就没有必要搜索了。
+
+接下来看一下优化过程如下：
+
+已经选择的元素个数：path.size();
+
+还需要的元素个数为: k - path.size();
+
+在集合n中至多要从该起始位置 : n - (k - path.size()) + 1，开始遍历
+
+为什么有个+1呢，因为包括起始位置，我们要是一个左闭的集合。
+
+举个例子，n = 4，k = 3， 目前已经选取的元素为0（path.size为0），n - (k - 0) + 1 即 4 - ( 3 - 0) + 1 = 2。
+====================================================================================================
+8/8/2023没有剪枝的代码
+class Solution {
+    List<List<Integer>> result = new ArrayList<>();
+    LinkedList<Integer> list = new LinkedList<>();
+    public List<List<Integer>> combine(int n, int k) {
+        backTracking(n,k,1);
+        return result;
+    }
+    private void backTracking(int n, int k, int startIndex) {
+        if(list.size() == k){
+            result.add(new ArrayList(list));
+            return;
+        }
+        for(int i = startIndex; i <= n; i++){
+            list.add(i);
+            //不能写成backTracking(n,k,starIndex+1);
+            backTracking(n,k,i+1);
+            list.removeLast();
+        }
+    }
+}
+LinkedList 和 ArrayList 中的 remove() 方法在实现上有所不同，因为它们在数据结构上的设计有所不同。这两种方法的行为和性能可能会因数据结构的不同而有所差异。
+
+在 LinkedList 中，remove() 方法会根据索引或元素的值来移除元素。由于 LinkedList 是由一个链表构成的，移除元素时只需要调整链表中相应节点的指针即可。
+这使得在链表中删除元素的时间复杂度为 O(1)，前提是你已经知道要删除的元素的位置或引用。
+
+在 ArrayList 中，remove() 方法的行为稍微复杂一些。如果你通过索引调用 remove(int index) 方法，那么该方法会将被移除元素之后的所有元素向前移动一个位置，
+以填补被移除的位置。这可能会导致较高的时间复杂度，最坏情况下为 O(n)，其中 n 是元素的总数，因为需要移动大量元素。如果你通过元素的值调用 remove(Object o) 方法，
+那么 ArrayList 会首先查找元素的索引，然后再进行移除操作。
+
+总的来说，如果你需要频繁地进行插入和删除操作，而不太需要大量随机访问操作，LinkedList 可能更适合，因为其在插入和删除方面的性能更好。
+而如果你主要进行随机访问，并且少量删除操作，ArrayList 可能更合适，因为它在随机访问方面的性能更好。选择使用哪种数据结构取决于你的具体需求。
