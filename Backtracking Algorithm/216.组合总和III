@@ -15,7 +15,7 @@ class Solution {
                 return;
             }
         }
-        for(int i=startIndex; i<=9-(k-path.size())+1; i++){
+        for(int i=startIndex; i<=9-(k-path.size())+1; i++){ //注意区间问题
             path.add(i);
             sum += i;
             summation(k, n, i+1, sum);
@@ -24,3 +24,51 @@ class Solution {
         }
     }
 }
+==================================================================================================
+有问题的代码：
+class Solution {
+    List<List<Integer>> result = new ArrayList<>();
+    LinkedList<Integer> list = new LinkedList<>();
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        int sum = 0;
+        backTracking(n,k,1,sum);
+        return result;
+    }
+    private void backTracking(int n, int k, int startIndex, int sum) {
+        if(list.size() == k){
+            if(sum == n){
+                result.add(new ArrayList(list));
+            }
+            return;
+        }
+        for(int i = startIndex; i <= 9; i++){
+            sum += startIndex; //似乎不应该加startIndex,要加的应该是i
+            list.add(i);
+            backTracking(n,k,i+1,sum);
+            //回溯
+            sum -= startIndex;
+            //回溯
+            list.removeLast();
+        }
+    }
+}
+
+修改后的代码块(成功运行)：
+private void backTracking(int n, int k, int startIndex, int sum) {
+        if(list.size() == k){
+            if(sum == n){
+                result.add(new ArrayList(list));
+            }
+            return;
+        }
+        for(int i = startIndex; i <= 9; i++){
+            sum += i; //这里startIndex在每次进入函数的时候便已经确定，所以不应该是sum += startIndex
+            list.add(i);
+            backTracking(n,k,i+1,sum);
+            sum -= i; //与上同理
+            list.removeLast();
+        }
+    }
+总结一下：startIndex在函数中作为一个自动调整加进去的数不会重复
+
+剪枝的时候：9 - (k-list.size()) + 1; 必须要+1才可以
