@@ -34,3 +34,43 @@ class Solution {
         }
     }
 }
+========================================================================================================================
+2023.8.11所写代码
+class Solution {
+    List<List<Integer>> result = new ArrayList<>();
+    List<Integer> temp = new ArrayList<>();
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        if(candidates.length == 0){
+            return result;
+        }
+        Arrays.sort(candidates);
+        backTracking(candidates,target,0,0);
+        return result;
+    }
+    private void backTracking(int[] candidates, int target, int sum, int startIndex) {
+        if(sum == target){
+            result.add(new ArrayList<>(temp));
+            return;
+        }
+        for(int i = startIndex; i < candidates.length; i++){
+            if(sum + candidates[i] > target){
+                break;
+            }
+            if(i > startIndex && candidates[i] == candidates[i-1]){
+                continue;
+            }
+            sum += candidates[i];
+            temp.add(candidates[i]);
+            backTracking(candidates,target,sum,i+1);//改成startIndex = 1
+            sum -= candidates[i];
+            temp.remove(temp.size()-1);
+        }
+    }
+}
+遗留的问题：
+if(i > startIndex && candidates[i] == candidates[i-1]){
+                continue;
+            }
+i > startIndex：这个条件确保我们仅在已经考虑了一次某个数字之后，才跳过重复的数字。也就是说，我们只跳过相同元素中的非第一个。
+
+candidates[i] == candidates[i - 1]：这个条件检查当前元素是否与上一个元素相同。
