@@ -1,0 +1,36 @@
+class Solution {
+    List<List<Integer>> result = new ArrayList<>();
+    LinkedList<Integer> path = new LinkedList<>();
+    boolean[] used; //去重，相当于flag 
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        //used代表同一树层
+        used = new boolean[candidates.length]; 
+        Arrays.fill(used,false);
+        Arrays.sort(candidates);
+        backTracking(candidates, target, 0, 0);
+        return result;
+    }
+    public void backTracking(int[] candidates, int target, int startIndex, int sum){
+        if(sum == target){
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for(int i=startIndex; i<candidates.length; i++){
+            if(sum + candidates[i] > target){
+                break;
+            }
+            //不加下面的语句是出现重复
+            //used[i-1] == false and candidates[i] == candidates[i-1]
+            if(i>0 && candidates[i] == candidates[i-1] && !used[i-1]){
+                continue;
+            }
+            used[i] = true;
+            path.add(candidates[i]);
+            sum += candidates[i];
+            backTracking(candidates, target, i+1, sum);
+            used[i] = false;
+            sum -= candidates[i];
+            path.removeLast();
+        }
+    }
+}
