@@ -63,3 +63,7 @@ class Solution {
 
 2.如果不添加if(sum + candidates[i] > target) break;
 会出现StackOverFlowException
+
+3.之前的回溯有遇到传入参数startIndex，每次递归赋值i+1,而这次是i,有什么不同？
+答：i的时候，每次都是从当前索引开始，比如第一位不会再将0索引上的数再加一次，会包括自身当前索引的数；
+    i+1的时候，每次都是从当前索引的下一位，不会包括自身当前索引的数。
