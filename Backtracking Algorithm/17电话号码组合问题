@@ -1,0 +1,65 @@
+/**错误代码如下：**/
+class Solution {
+    List<String> result = new ArrayList<>();
+    public List<String> letterCombinations(String digits) {
+        if(digits == null || digits.length() == 0){
+            return result;
+        }
+        String[] numString = {"", "", "abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        backTracking(digits,numString,0);
+        return result;
+    }
+    StringBuffer temp = new StringBuffer();
+    private void backTracking(String digits, String[] numString, int num) {
+        if(num == digits.length()){
+            result.add(temp.toString());
+            return;
+        }
+        String str = numString[digits.charAt(num) - '0'];
+        for(int i = 0; i < str.length(); i ++){
+            temp.append(str.charAt(i));
+            backTracking(digits,numString,num+1);
+            temp.deleteCharAt(i);//这里是错误的地方
+        }
+    }
+}
+在删除 temp 的字符时有一个问题，导致结果不符合预期。问题在于，在回溯过程中，你使用了 temp.deleteCharAt(i) 来删除字符，这是错误的，
+因为你应该删除最后一个字符，而不是指定索引位置的字符。
+正确的做法是使用 temp.deleteCharAt(temp.length() - 1) 来删除最后一个字符。
+
+假设你添加了字符 "a" 到 temp，然后删除了索引位置为 i 的字符，如果 i 的值是 0，那么 "a" 将被删除，如果 i 的值是 1，那么 "a" 将被保留，而不是删除。
+这将导致你的回溯过程错误，因为你在删除字符时没有按照正确的顺序删除。
+
+//知道为啥不能用i来指定索引了，因为你每次进去的索引都是从0开始的。
+
+第二个问题：
+
+digits == null：如果 digits 为 null，意味着输入是一个空引用，表示没有提供有效的输入。在这种情况下，直接返回空的结果列表。
+
+digits.length() == 0：如果 digits 的长度为 0，意味着输入是一个空字符串。也就是说，没有提供任何数字，因此同样直接返回空的结果列表。
+============================================================================================================================================
+正确代码：
+class Solution {
+    List<String> result = new ArrayList<>();
+    public List<String> letterCombinations(String digits) {
+        if(digits == null || digits.length() == 0){
+            return result;
+        }
+        String[] numString = {"", "", "abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        backTracking(digits,numString,0);
+        return result;
+    }
+    StringBuffer temp = new StringBuffer();
+    private void backTracking(String digits, String[] numString, int num) {
+        if(num == digits.length()){
+            result.add(temp.toString());
+            return;
+        }
+        String str = numString[digits.charAt(num) - '0'];
+        for(int i = 0; i < str.length(); i ++){
+            temp.append(str.charAt(i));
+            backTracking(digits,numString,num+1);
+            temp.deleteCharAt(temp.length()-1);//知道为啥不能用i来指定索引了，因为你每次进去的索引都是从0开始的。
+        }
+    }
+}
