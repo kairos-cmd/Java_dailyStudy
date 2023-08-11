@@ -1,0 +1,65 @@
+class Solution {
+    List<List<Integer>> result = new ArrayList<>();
+    // LinkedList<Integer> sour = new LinkedList<>();
+    List<Integer> sour = new ArrayList<>();
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        backTracking(candidates, target, 0,0);
+        return result;
+    }
+    public void backTracking(int[] candidates, int target, int startIndex, int sum){
+        if(sum == target){
+            result.add(new ArrayList<>(sour)); //这里不能少，也不能直接写成sour
+            return;
+        }
+        for(int i=startIndex; i<candidates.length; i++){
+            if(sum + candidates[i] > target){ //为啥写这里
+                break;
+            }
+            sour.add(candidates[i]);
+            sum += candidates[i];
+            backTracking(candidates, target, i, sum); //理解这里是i，不是startIndex
+            sum -= candidates[i];
+            // sour.removeLast();
+            sour.remove(sour.size()-1);
+        }
+    }
+}
+==================================================================================================================
+8/11新写的代码：
+class Solution {
+    List<List<Integer>> result = new ArrayList<>();
+    List<Integer> temp = new ArrayList<>();
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        if(candidates.length == 0){
+            return result;
+        }
+        backTracking(candidates,target,0,0);
+        return result;
+    }
+    private void backTracking(int[] candidates, int target, int startIndex,int sum) {
+        if(target == sum){
+            result.add(new ArrayList(temp));//如果用temp传递的是引用，最终指向同一个array，所以必须要复制一个保存它当时的状态
+            return;
+        }
+        for(int i = startIndex; i < candidates.length; i++){
+            if(sum + candidates[i] > target){ 
+                break;
+            }
+            temp.add(candidates[i]);
+            sum += candidates[i];
+            backTracking(candidates,target, i,sum);//这里如果用startIndex递归就重复相同项
+            sum -= candidates[i];
+            temp.remove(temp.size()-1);//如果是i为index，那么每次remove的都是从0索引开始的
+        }
+    }
+}
+问题解答：
+1.为什么使用result.add(temp);出来的结果全部为空？
+答：问题出在这行代码上：result.add(temp);，导致结果中的所有列表都为空。这是因为在 Java 中，List 是引用类型，当你将 temp 添加到 result 列表时，
+实际上是将 temp 列表的引用添加到了 result 中。由于在回溯过程中，temp 列表会不断地被修改，因此最终 result 中的所有列表都指向了同一个被修改的 temp 列表，从而导致它们都变为空。
+为了解决这个问题，你需要在将 temp 添加到 result 之前，创建一个新的列表作为副本，以保存当前的组合。这样在后续的回溯中修改 temp 列表时不会影响已经保存到 result 中的组合。
+
+2.如果不添加if(sum + candidates[i] > target) break;
+会出现StackOverFlowException
