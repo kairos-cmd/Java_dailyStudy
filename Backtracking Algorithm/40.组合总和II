@@ -74,3 +74,8 @@ if(i > startIndex && candidates[i] == candidates[i-1]){
 i > startIndex：这个条件确保我们仅在已经考虑了一次某个数字之后，才跳过重复的数字。也就是说，我们只跳过相同元素中的非第一个。
 
 candidates[i] == candidates[i - 1]：这个条件检查当前元素是否与上一个元素相同。
+
+// 出现重复节点，同层的第一个节点已经被访问过，所以直接跳过
+      if (i > 0 && candidates[i] == candidates[i - 1] && !used[i - 1]) {
+        continue;
+      }
