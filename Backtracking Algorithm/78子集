@@ -3,3 +3,26 @@
 =========================================================================================================
 问题1：什么时候for可以从0开始呢？
 答：求排列问题的时候，就要从0开始，因为集合是有序的，{1, 2} 和{2, 1}是两个集合
+class Solution {
+    List<List<Integer>> result = new ArrayList<>();
+    List<Integer> temp = new ArrayList<>();
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        if(nums == null){
+            return result;
+        }
+        backTracking(nums, 0);
+        return result;
+    }
+    private void backTracking(int[] nums, int startIndex) {
+        result.add(new ArrayList<>(temp));
+        for(int i = startIndex; i < nums.length; i++){
+            if( i > startIndex && nums[i] == nums[i-1]){ //比如1，2，2
+                continue;
+            }
+            temp.add(nums[i]);
+            backTracking(nums,i+1);
+            temp.remove(temp.size()-1);
+        }
+    }
+}
