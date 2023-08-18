@@ -26,3 +26,32 @@ class Solution {
         }
     }
 }
+=================================================================================================================
+利用used boolean类型数组来去重
+class Solution {
+    List<List<Integer>> result = new ArrayList<>();
+    List<Integer> temp = new ArrayList<>();
+    boolean[] used;
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        used = new boolean[nums.length];
+        Arrays.sort(nums);
+        if(nums == null){
+            return result;
+        }
+        backTracking(nums, 0);
+        return result;
+    }
+    private void backTracking(int[] nums, int startIndex) {
+        result.add(new ArrayList<>(temp));
+        for(int i = startIndex; i < nums.length; i++){
+            if(i>0 && nums[i-1] == nums[i] && !used[i-1]){
+                continue;
+            }
+            temp.add(nums[i]);
+            used[i] = true;
+            backTracking(nums,i+1);
+            used[i] = false;
+            temp.remove(temp.size()-1);
+        }
+    }
+}
