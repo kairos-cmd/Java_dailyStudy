@@ -1,0 +1,40 @@
+这道题目有几个难点：
+
+1.一个行程中，如果航班处理不好容易变成一个圈，成为死循环
+2.有多种解法，字母序靠前排在前面，让很多同学望而退步，如何该记录映射关系呢 ？
+3.使用回溯法（也可以说深搜） 的话，那么终止条件是什么呢？
+4.搜索的过程中，如何遍历一个机场所对应的所有机场。
+
+class Solution {
+    LinkedList<String> result;
+    LinkedList<String> path = new LinkedList<>();
+    public List<String> findItinerary(List<List<String>> tickets) {
+        Collections.sort(tickets,(a,b) -> a.get(1).compareTo(b.get(1)));//字母排序大的放后面(ascend),所以当存在多种行程组合时，会优先放入排序更小的组合
+        path.add("JFK");
+        boolean[] used = new boolean[tickets.size()];
+        backTracking(tickets, used);
+        return result;
+    }
+    public boolean backTracking(List<List<String>> tickets, boolean[] used) {
+        if(path.size() == tickets.size() + 1){
+            result = new LinkedList<>(path); //不会变成二元的
+            return true;
+        }
+        for(int i = 0; i < tickets.size(); i++){
+            if(!used[i] && tickets.get(i).get(0).equals(path.getLast())){ //出发地等于目的地，且不得选取已经飞过的地方
+                path.add(tickets.get(i).get(1));
+                used[i] = true;
+
+                if(backTracking(tickets,used)){
+                    return true;
+                }
+
+                used[i] = false;
+                path.removeLast();
+            }
+        }
+        return false;
+    }
+}
+还有一个问题：什么时候backTracking函数需要返回值？
+答：如果需要处理返回值或者找到一条路径，那么一定需要返回值，因为遇到符合条件的路径就要及时返回。
