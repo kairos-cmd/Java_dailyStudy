@@ -1,1 +1,140 @@
+两种遍历二维数组的方法:
+class printArray {
+    public static void main(String[] args) {
+        int[][] arr = {{1,2,3},{4,5},{6}};
+        
+        //调用方法1
+        printArr1(arr);
+        System.out.println("------");
+        //调用方法2
+        printArr2(arr);
+        System.out.println("------");
+    }
+    
+    //方法1
+    public static void printArr1(int[][] arr) {
+        for(int x=0; x<arr.length; x++) {
+            for(int y=0; y<arr[x].length; y++) {
+                System.out.print(arr[x][y]+" ");
+            }
+            System.out.println();
+        }
+    }
+    
+    //方法2
+    public static void printArr2(int[][] arr) {
+        //遍历二维数组中每一个一维数组
+        for(int[] cells : arr) {
+            //遍历一维数组中每一个元素
+            for(int cell : cells) {
+                System.out.print(cell+" ");
+            } 
+             System.out.println();
+        }
+    }
+}
 
+了解到一种Arrays.deepToString()的方法,是将二维数组转字符串输出
+
+Java copyValueOf() 方法
+copyValueOf() 方法有两种形式：
+1.public static String copyValueOf(char[] data): 返回指定数组中表示该字符序列的字符串。
+2.public static String copyValueOf(char[] data, int offset, int count): 返回指定数组中表示该字符序列的字符串。
+
+例子：
+public class Test {
+    public static void main(String args[]) {
+        char[] Str1 = {'h', 'e', 'l', 'l', 'o', ' ', 's', 'u', 'n', 'n', 'y', '!'};
+        String Str2 = "";
+
+        Str2 = Str2.copyValueOf( Str1 );
+        System.out.println("返回结果：" + Str2);
+
+        Str2 = Str2.copyValueOf( Str1, 2, 6 );
+        System.out.println("返回结果：" + Str2);
+    }
+}
+返回结果：hello sunny!
+返回结果：llo ru
+==========================================================================================================================
+class Solution {
+    List<List<String>> result = new ArrayList<>();
+    public List<List<String>> solveNQueens(int n) {
+        //定义一个二维字符数组
+        char[][] chessboard = new char[n][n];
+        for (char[] chars : chessboard) {
+            Arrays.fill(chars, '.');
+        }
+        backTracking(n, 0, chessboard);
+        return result;
+    }
+
+    public void backTracking(int n, int row, char[][] chessboard) {
+        //终止条件
+        if(row == n){
+            result.add(Array2List(chessboard));
+            return;
+        }
+        for(int col = 0; col < n; col++){
+            //满足三个条件才可以将Q添加进去
+            if(isValid(chessboard,n,row,col)){
+                chessboard[row][col] = 'Q';
+                backTracking(n,row+1,chessboard);
+                chessboard[row][col] = '.';
+            }
+        }
+    }
+
+    public static List<String> Array2List(char[][] chessboard) {
+        List<String> temp = new ArrayList<>();
+//        StringBuffer sb = new StringBuffer();
+        for(int i = 0; i < chessboard.length; i++){
+            temp.add(String.valueOf(chessboard[i]));
+        }
+        return temp;
+    }
+
+    public static boolean isValid(char[][] chessboard, int n, int row, int col) {
+        //检查列
+        for(int i = 0; i < row; i++){
+            if(chessboard[i][col] == 'Q'){
+                return false;
+            }
+        }
+
+        //检查45度对角线,一直检查到起始的行和列
+        for(int i = row -1, j = col - 1; i >= 0 && j >= 0; i--, j--){
+            if(chessboard[i][j] == 'Q'){
+                return false;
+            }
+        }
+
+        //检查135度,注意这里j <= n-1，为什么不是n,因为索引是n-1
+        for(int i = row - 1, j = col + 1; i >= 0 && j <= n-1; i--, j++){
+            if(chessboard[i][j] == 'Q'){
+                return false;
+            }
+        }
+
+        //可以不用检查行，但保险起见还是加上
+        for(int i = 0; i < col; i++){
+            if(chessboard[row][i] == 'Q'){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+valueOf()和copyValueOf()：
+为了避免这个问题，提供了copyValueOf方法，每次都拷贝成新的字符数组来构造新的String对象。
+但是现在的String对象，在构造器中就通过拷贝新数组实现了，所以这两个方面在本质上已经没区别了。
+==========================================================================================================
+如果在将二维字符数组转换成list<String>时，使用StringBuffer，依据stringbuffer会将元素连接起来的特性，最后结果会是：
+ public static List<String> Array2List(char[][] chessboard) {
+        StringBuffer sb = new StringBuffer();
+        for(int i = 0; i < chessboard.length; i++){
+            sb.append(String.valueOf(chessboard[i]));
+        }
+        return Arrays.asList(sb.toString());
+    }
+结果是：[[.Q.....QQ.....Q.], [..Q.Q......Q.Q..]]
